@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"net"
@@ -192,6 +193,8 @@ func findMonomePort() (int, error) {
 	}
 
 	select {
+	case <-time.After(1 * time.Second):
+		return 0, errors.New("no monome grid detected")
 	case p := <-port:
 		return p, nil
 	case err := <-errc:
